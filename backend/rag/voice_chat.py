@@ -7,23 +7,18 @@ from rag_pipeline import RAGPipeline
 import uuid
 import re
 
-# ✅ Set up Google Cloud credentials
+
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"C:\\Users\\hp\\OneDrive\\Desktop\\genLango\\backend\\rag\\gcloud-key.json"
 
-# 🔁 Set up pygame for audio playback
 pygame.init()
 
-# 🎤 Setup recognizer
 recognizer = sr.Recognizer()
 
-# 🧠 Load your AI pipeline (Ollama-backed)
 rag = RAGPipeline(lesson_number=1)
 
-# 🔊 Google Text-to-Speech speaking function
 def speak(text):
     print(f"\U0001F9E0 AI: {text}")
 
-    # Setup the Text-to-Speech client
     client = texttospeech.TextToSpeechClient()
     synthesis_input = texttospeech.SynthesisInput(text=text)
 
@@ -37,7 +32,6 @@ def speak(text):
         audio_encoding=texttospeech.AudioEncoding.MP3
     )
 
-    # Synthesize speech and save to file
     response = client.synthesize_speech(
         input=synthesis_input, voice=voice, audio_config=audio_config
     )
@@ -56,7 +50,6 @@ def speak(text):
     pygame.mixer.quit()
     os.remove(filename)
 
-# 🎙️ Listen function to capture speech and process it
 def listen():
     with sr.Microphone() as source:
         print("🎙️ Listening...")
@@ -64,7 +57,6 @@ def listen():
         audio = recognizer.listen(source)
 
         try:
-            # First, try recognizing as English
             text_en = recognizer.recognize_google(audio, language="en-IN")
             print(f"👤 You (EN): {text_en}")
             return text_en, "english"
@@ -72,7 +64,6 @@ def listen():
             pass
 
         try:
-            # If English fails, try recognizing as Hindi
             text_hi = recognizer.recognize_google(audio, language="hi-IN")
             print(f"👤 You (HI): {text_hi}")
             return text_hi, "hindi"
@@ -84,7 +75,6 @@ def listen():
     return "", "unknown"
 
 
-# 📚 Introduce Lesson Function
 def lesson_intro(lesson_num, lesson_data):
     phrases = lesson_data.get("phrases", [])
     if not phrases:
@@ -100,7 +90,6 @@ def handle_user_response(user_input, lesson_data, language):
     user_input_lower = user_input.lower()
 
     if language == "english":
-        # User asked something in English, treat as a question
         if "good morning" in user_input_lower:
             return "In Hindi, we say 'सुप्रभात' (Suprabhat) for Good Morning!"
         elif "hello" in user_input_lower:
@@ -114,7 +103,6 @@ def handle_user_response(user_input, lesson_data, language):
         else:
             return rag.chat(user_input)
     elif language == "hindi":
-        # User is speaking Hindi
         for phrase in lesson_data.get("phrases", []):
             if phrase["hindi"] in user_input_lower:
                 return f"Yes! '{phrase['english']}' means '{phrase['hindi']}' in Hindi. Great job!"
@@ -123,7 +111,6 @@ def handle_user_response(user_input, lesson_data, language):
         return "I'm sorry, I couldn't understand the language you spoke."
 
 
-# 🚀 Main conversation loop
 if __name__ == "__main__":
     lesson_number = 1
     base_dir = os.path.dirname(__file__)
