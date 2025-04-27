@@ -1,0 +1,58 @@
+[
+    {
+      "lesson_number": 1,
+      "topic": "Greetings",
+      "phrases": [
+        {"english": "Hello", "hindi": "नमस्ते"},
+        {"english": "Good morning", "hindi": "सुप्रभात"},
+        {"english": "Good night", "hindi": "शुभ रात्रि"},
+        {"english": "How are you?", "hindi": "आप कैसे हैं?"},
+        {"english": "Nice to meet you", "hindi": "आपसे मिलकर अच्छा लगा"}
+      ]
+    },
+    {
+      "lesson_number": 2,
+      "topic": "Introducing Yourself",
+      "phrases": [
+        {"english": "My name is Ramsha", "hindi": "मेरा नाम रम्शा है"},
+        {"english": "What is your name?", "hindi": "आपका नाम क्या है?"},
+        {"english": "I am a student", "hindi": "मैं एक छात्रा हूँ"},
+        {"english": "I live in Dubai", "hindi": "मैं दुबई में रहती हूँ"},
+        {"english": "Nice to meet you", "hindi": "आपसे मिलकर अच्छा लगा"}
+      ]
+    },
+    {
+      "lesson_number": 3,
+      "topic": "Asking Questions",
+      "phrases": [
+        {"english": "Where are you from?", "hindi": "आप कहाँ से हैं?"},
+        {"english": "What do you do?", "hindi": "आप क्या करते हैं?"},
+        {"english": "Do you speak Hindi?", "hindi": "क्या आप हिंदी बोलते हैं?"},
+        {"english": "How old are you?", "hindi": "आपकी उम्र क्या है?"},
+        {"english": "Where do you live?", "hindi": "आप कहाँ रहते हैं?"}
+      ]
+    },
+    {
+      "lesson_number": 4,
+      "topic": "Basic Responses",
+      "phrases": [
+        {"english": "Yes", "hindi": "हाँ"},
+        {"english": "No", "hindi": "नहीं"},
+        {"english": "Maybe", "hindi": "शायद"},
+        {"english": "I don't know", "hindi": "मुझे नहीं पता"},
+        {"english": "I understand", "hindi": "मैं समझता हूँ"}
+      ]
+    },
+    {
+      "lesson_number": 5,
+      "topic": "Common Phrases",
+      "phrases": [
+        {"english": "Please", "hindi": "कृपया"},
+        {"english": "Thank you", "hindi": "धन्यवाद"},
+        {"english": "You're welcome", "hindi": "स्वागत है"},
+        {"english": "Sorry", "hindi": "माफ़ कीजिए"},
+        {"english": "Excuse me", "hindi": "माफ़ कीजिए"}
+      ]
+    }
+  ]
+  

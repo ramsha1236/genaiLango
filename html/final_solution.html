@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jen Lango - Final Solution</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffeef8;
+        }
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #ff1493;
+            text-align: center;
+        }
+        .chat-area {
+            height: 300px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .user {
+            background-color: #ffcce6;
+            margin-left: 20%;
+        }
+        .assistant {
+            background-color: #f0f0f0;
+            margin-right: 20%;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #ff1493;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #ff0080;
+        }
+        .feedback {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            border-left: 3px solid #ff1493;
+        }
+        .mode-toggle {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .mode-toggle button {
+            margin: 0 5px;
+        }
+        .active {
+            background-color: #ff0080;
+        }
+        .examples {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .examples h3 {
+            color: #ff1493;
+            margin-top: 0;
+        }
+        .examples button {
+            margin: 5px;
+            padding: 5px 10px;
+            font-size: 14px;
+            background-color: #ffcce6;
+            color: #333;
+        }
+        .mic-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #ff1493;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            margin: 0 auto 15px auto;
+            transition: all 0.3s ease;
+        }
+        .mic-button.listening {
+            background-color: #ff0000;
+            animation: pulse 1.5s infinite;
+        }
+        .status {
+            text-align: center;
+            margin-bottom: 15px;
+            font-style: italic;
+            color: #666;
+        }
+        .debug-area {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 100px;
+            overflow-y: auto;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Jen Lango Hindi Teacher</h1>
+        
+        <div class="mode-toggle">
+            <button id="hindi-mode" class="active">Hindi Mode</button>
+            <button id="english-mode">English Mode</button>
+        </div>
+        
+        <div class="mic-button" id="mic-button">
+            🎤
+        </div>
+        
+        <div class="status" id="status">
+            Click the microphone to start speaking
+        </div>
+        
+        <div class="chat-area" id="chat-area">
+            <div class="message assistant">
+                Hi! I'm Jen, your Hindi language teacher. How can I help you today?
+            </div>
+        </div>
+        
+        <div class="controls">
+            <input type="text" id="message-input" placeholder="Type a Hindi phrase...">
+            <button id="send-btn">Send</button>
+        </div>
+        
+        <div class="feedback" id="feedback-area">
+            <p>Feedback will appear here...</p>
+        </div>
+        
+        <div class="examples">
+            <h3>Try these phrases:</h3>
+            <div id="example-phrases">
+                <button onclick="useExample('नमस्ते')">नमस्ते</button>
+                <button onclick="useExample('आप कैसे हो')">आप कैसे हो</button>
+                <button onclick="useExample('मैं ठीक हूँ')">मैं ठीक हूँ</button>
+                <button onclick="useExample('मेरा नाम है')">मेरा नाम है</button>
+                <button onclick="useExample('आपका नाम क्या है')">आपका नाम क्या है</button>
+            </div>
+        </div>
+        
+        <div class="debug-area" id="debug-area">
+            Debug info will appear here...
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://127.0.0.1:8005';
+        let currentLanguage = 'hi-IN'; // Default to Hindi mode
+        let isListening = false;
+        let recognition = null;
+        
+        // DOM elements
+        const chatArea = document.getElementById('chat-area');
+        const messageInput = document.getElementById('message-input');
+        const sendBtn = document.getElementById('send-btn');
+        const feedbackArea = document.getElementById('feedback-area');
+        const hindiModeBtn = document.getElementById('hindi-mode');
+        const englishModeBtn = document.getElementById('english-mode');
+        const micButton = document.getElementById('mic-button');
+        const statusElement = document.getElementById('status');
+        const debugArea = document.getElementById('debug-area');
+        
+        // Debug function
+        function debug(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            debugArea.innerHTML += `<div>[${timestamp}] ${message}</div>`;
+            debugArea.scrollTop = debugArea.scrollHeight;
+        }
+        
+        // Initialize speech recognition
+        function initSpeechRecognition() {
+            debug('Initializing speech recognition...');
+            
+            if (window.webkitSpeechRecognition) {
+                debug('Using webkitSpeechRecognition');
+                recognition = new webkitSpeechRecognition();
+            } else if (window.SpeechRecognition) {
+                debug('Using SpeechRecognition');
+                recognition = new SpeechRecognition();
+            } else {
+                debug('Speech recognition not supported');
+                alert('Speech recognition is not supported in your browser. Please use Chrome or Edge.');
+                micButton.style.display = 'none';
+                statusElement.textContent = 'Speech recognition not supported in this browser';
+                return;
+            }
+            
+            recognition.continuous = false;
+            recognition.interimResults = false;
+            recognition.lang = currentLanguage;
+            
+            recognition.onstart = function() {
+                debug('Recognition started');
+                isListening = true;
+                micButton.classList.add('listening');
+                statusElement.textContent = 'Listening...';
+            };
+            
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                debug(`Speech recognized: "${transcript}"`);
+                messageInput.value = transcript;
+                statusElement.textContent = `You said: "${transcript}"`;
+                
+                // Auto-send after recognition
+                setTimeout(() => sendMessage(transcript), 500);
+            };
+            
+            recognition.onend = function() {
+                debug('Recognition ended');
+                isListening = false;
+                micButton.classList.remove('listening');
+                statusElement.textContent = 'Click the microphone to start speaking';
+            };
+            
+            recognition.onerror = function(event) {
+                debug(`Recognition error: ${event.error}`);
+                isListening = false;
+                micButton.classList.remove('listening');
+                statusElement.textContent = `Error: ${event.error}. Click the microphone to try again.`;
+            };
+            
+            debug('Speech recognition initialized');
+        }
+        
+        // Toggle speech recognition
+        function toggleListening() {
+            if (!recognition) {
+                initSpeechRecognition();
+            }
+            
+            if (isListening) {
+                debug('Stopping recognition');
+                recognition.stop();
+            } else {
+                debug('Starting recognition');
+                try {
+                    recognition.start();
+                } catch (error) {
+                    debug(`Error starting recognition: ${error.message}`);
+                    // Reinitialize and try again
+                    initSpeechRecognition();
+                    setTimeout(() => {
+                        try {
+                            recognition.start();
+                        } catch (error) {
+                            debug(`Failed to restart recognition: ${error.message}`);
+                            statusElement.textContent = 'Could not start speech recognition. Please try typing instead.';
+                        }
+                    }, 500);
+                }
+            }
+        }
+        
+        // Send message to API
+        function sendMessage(text) {
+            const message = text || messageInput.value.trim();
+            if (!message) return;
+            
+            debug(`Sending message: "${message}" in ${currentLanguage} mode`);
+            
+            // Add user message to chat
+            addMessage(message, 'user');
+            messageInput.value = '';
+            
+            // Send to API
+            statusElement.textContent = 'Sending to backend...';
+            
+            fetch(`${API_URL}/api/chat`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: message,
+                    lesson_id: 1,
+                    language: currentLanguage
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`API error ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                debug(`API response received: ${JSON.stringify(data).substring(0, 100)}...`);
+                
+                // Add assistant message to chat
+                addMessage(data.text, 'assistant');
+                
+                // Update feedback area
+                updateFeedback(data.feedback);
+                
+                statusElement.textContent = 'Response received';
+            })
+            .catch(error => {
+                debug(`API error: ${error.message}`);
+                addMessage(`Error: ${error.message}`, 'assistant');
+                statusElement.textContent = `Error: ${error.message}`;
+            });
+        }
+        
+        // Add message to chat area
+        function addMessage(text, role) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${role}`;
+            messageDiv.textContent = text;
+            chatArea.appendChild(messageDiv);
+            chatArea.scrollTop = chatArea.scrollHeight;
+        }
+        
+        // Update feedback area
+        function updateFeedback(feedback) {
+            if (!feedback) {
+                feedbackArea.innerHTML = '<p>No feedback available</p>';
+                return;
+            }
+            
+            let feedbackHTML = '<h3>Feedback:</h3>';
+            
+            if (feedback.pronunciation) {
+                feedbackHTML += `<p><strong>Pronunciation:</strong> ${feedback.pronunciation}</p>`;
+            }
+            
+            if (feedback.proficiency) {
+                feedbackHTML += `<p><strong>Proficiency:</strong> ${feedback.proficiency}</p>`;
+            }
+            
+            if (feedback.cultural_context) {
+                feedbackHTML += `<p><strong>Cultural Context:</strong> ${feedback.cultural_context}</p>`;
+            }
+            
+            feedbackArea.innerHTML = feedbackHTML;
+        }
+        
+        // Toggle language mode
+        function setLanguageMode(mode) {
+            debug(`Switching to ${mode} mode`);
+            currentLanguage = mode;
+            
+            if (recognition) {
+                recognition.lang = mode;
+            }
+            
+            if (mode === 'hi-IN') {
+                hindiModeBtn.classList.add('active');
+                englishModeBtn.classList.remove('active');
+                messageInput.placeholder = 'नमस्ते या आप कैसे हो?';
+            } else {
+                englishModeBtn.classList.add('active');
+                hindiModeBtn.classList.remove('active');
+                messageInput.placeholder = 'Type Hindi phrases to practice...';
+            }
+        }
+        
+        // Use example phrase
+        function useExample(phrase) {
+            messageInput.value = phrase;
+            sendMessage(phrase);
+        }
+        
+        // Event listeners
+        sendBtn.addEventListener('click', () => sendMessage());
+        messageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        micButton.addEventListener('click', toggleListening);
+        
+        hindiModeBtn.addEventListener('click', () => setLanguageMode('hi-IN'));
+        englishModeBtn.addEventListener('click', () => setLanguageMode('en-US'));
+        
+        // Initialize
+        debug('Application starting...');
+        initSpeechRecognition();
+        
+        // Test API connection on load
+        debug('Testing API connection...');
+        fetch(`${API_URL}/api/chat`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                message: 'test',
+                lesson_id: 1,
+                language: 'en-US'
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+                debug('Backend connection successful');
+                return response.json();
+            } else {
+                debug('Backend connection failed');
+                throw new Error('Could not connect to backend server');
+            }
+        })
+        .then(data => {
+            debug(`Backend test response: ${JSON.stringify(data).substring(0, 100)}...`);
+        })
+        .catch(error => {
+            debug(`Backend connection error: ${error.message}`);
+            addMessage('Error: Could not connect to backend server. Please make sure it is running.', 'assistant');
+            statusElement.textContent = 'Error: Backend server not responding';
+        });
+    </script>
+</body>
+</html>

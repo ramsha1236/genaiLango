@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jen Lango - Learning Module</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background-color: #fdf2f8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+      padding: 1rem;
+    }
+    .card {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 800px;
+    }
+    h2 {
+      font-size: 1.875rem;
+      font-weight: bold;
+      margin-bottom: 2rem;
+      color: #db2777;
+      text-align: center;
+    }
+    .lessons {
+      display: grid;
+      gap: 1rem;
+    }
+    .lesson {
+      background-color: white;
+      border: 2px solid #db2777;
+      border-radius: 0.5rem;
+      padding: 1.5rem;
+    }
+    .lesson h3 {
+      color: #db2777;
+      margin: 0 0 0.5rem 0;
+    }
+    .lesson p {
+      margin: 0;
+      color: #4b5563;
+    }
+    .lesson-content {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid #e5e7eb;
+    }
+    .phrase {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      background-color: #fdf2f8;
+      border-radius: 0.25rem;
+    }
+    .hindi {
+      font-size: 1.25rem;
+      color: #db2777;
+    }
+    .english {
+      color: #6b7280;
+    }
+    button {
+      background-color: #db2777;
+      color: white;
+      padding: 0.5rem 1rem;
+      border-radius: 0.25rem;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #be185d;
+    }
+    .back-btn {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <button class="back-btn" onclick="window.location.href='modules.html'">← Back to Modules</button>
+  <div class="card">
+    <h2>Learning Module</h2>
+    <div class="lessons">
+      <div class="lesson">
+        <h3>Lesson 1: Basic Greetings</h3>
+        <p>Learn common Hindi greetings and introductions</p>
+        <div class="lesson-content">
+          <div class="phrase">
+            <div>
+              <div class="hindi">नमस्ते</div>
+              <div class="english">Hello / Namaste</div>
+            </div>
+            <button>Practice</button>
+          </div>
+          <div class="phrase">
+            <div>
+              <div class="hindi">आप कैसे हैं?</div>
+              <div class="english">How are you?</div>
+            </div>
+            <button>Practice</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="lesson">
+        <h3>Lesson 2: Basic Conversation</h3>
+        <p>Learn how to have a simple conversation in Hindi</p>
+        <div class="lesson-content">
+          <div class="phrase">
+            <div>
+              <div class="hindi">मैं ठीक हूं</div>
+              <div class="english">I am fine</div>
+            </div>
+            <button>Practice</button>
+          </div>
+          <div class="phrase">
+            <div>
+              <div class="hindi">धन्यवाद</div>
+              <div class="english">Thank you</div>
+            </div>
+            <button>Practice</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

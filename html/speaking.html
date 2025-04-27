@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jen Lango - Speaking Module</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background-color: #fdf2f8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+      padding: 1rem;
+    }
+    .card {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 800px;
+    }
+    h2 {
+      font-size: 1.875rem;
+      font-weight: bold;
+      margin-bottom: 2rem;
+      color: #db2777;
+      text-align: center;
+    }
+    .chat {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      max-height: 400px;
+      overflow-y: auto;
+      padding: 1rem;
+      background-color: #f9fafb;
+      border-radius: 0.5rem;
+    }
+    .message {
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      max-width: 80%;
+    }
+    .bot {
+      background-color: #db2777;
+      color: white;
+      align-self: flex-start;
+    }
+    .user {
+      background-color: #f3f4f6;
+      color: #1f2937;
+      align-self: flex-end;
+    }
+    .controls {
+      display: grid;
+      gap: 1rem;
+    }
+    .input-group {
+      display: flex;
+      gap: 0.5rem;
+    }
+    input {
+      flex: 1;
+      padding: 0.75rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+    }
+    button {
+      background-color: #db2777;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.5rem;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+    button:hover {
+      background-color: #be185d;
+    }
+    .mic-btn {
+      padding: 0.75rem;
+    }
+    .back-btn {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+    }
+    .context {
+      background-color: #fdf2f8;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .context h3 {
+      color: #db2777;
+      margin: 0 0 0.5rem 0;
+      font-size: 1.25rem;
+    }
+    .context p {
+      margin: 0;
+      color: #4b5563;
+    }
+  </style>
+</head>
+<body>
+  <button class="back-btn" onclick="window.location.href='modules.html'">← Back to Modules</button>
+  <div class="card">
+    <h2>Speaking Practice</h2>
+    
+    <div class="context">
+      <h3>Current Context: Greetings</h3>
+      <p>Practice basic greetings and introductions in Hindi with Jen Lango</p>
+    </div>
+
+    <div class="chat">
+      <div class="message bot">
+        नमस्ते! मैं जेन लैंगो हूं। आप कैसे हैं?
+      </div>
+      <div class="message user">
+        नमस्ते! मैं ठीक हूं।
+      </div>
+      <div class="message bot">
+        बहुत अच्छा! आप हिंदी सीख रहे हैं?
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="input-group">
+        <input type="text" placeholder="Type your response in Hindi...">
+        <button class="mic-btn">🎤</button>
+      </div>
+      <button>Send Response</button>
+    </div>
+  </div>
+</body>
+</html>
