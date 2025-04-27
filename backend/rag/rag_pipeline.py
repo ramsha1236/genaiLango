@@ -31,8 +31,8 @@ They just said: "{user_input}"
             ["ollama", "run", "llama3", prompt],
             capture_output=True,
             text=True,
-            encoding="utf-8",  # 👈 Add this line to force UTF-8 decoding
-            errors="replace"   # 👈 Replace any weird characters instead of crashing
+            encoding="utf-8",  
+            errors="replace"   
         )
         return result.stdout.strip() if result.stdout else "⚠️ LLaMA didn't respond. Check ollama status."
 
@@ -43,7 +43,6 @@ They just said: "{user_input}"
         return response
 
 
-# 💬 Example usage
 if __name__ == "__main__":
     rag = RAGPipeline(lesson_number=1)
     while True:
