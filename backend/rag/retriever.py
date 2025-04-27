@@ -5,14 +5,14 @@ from typing import List
 from pathlib import Path
 import json
 
-# 🔍 Get the path to lessons.json relative to this file
+
 lessons_path = Path(__file__).parent / "lessons.json"
 
-# Load the file
+
 with open(lessons_path, "r", encoding="utf-8") as f:
     lessons = json.load(f)
 
-# Load model once
+
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
 class LessonRetriever:
@@ -57,7 +57,7 @@ class LessonRetriever:
         return results
 
 
-# 🧪 Example usage
+
 if __name__ == "__main__":
     lesson = LessonRetriever(lesson_number=1)
     while True:
